@@ -36,8 +36,8 @@ function AddService({ listServices, setListServices}: any) {
                 <input type="text" id="name" value={serviceName} onChange={e => setServiceName(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Facial" required />
             </div>
             <div className="mb-5">
-                <label className="block mb-2 text-sm font-medium text-gray-900">Duration (minutes)</label>
-                <input type="number" id="duration" value={duration} onChange={e => setDuration(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="60" required />
+                <label className="block mb-2 text-sm font-medium text-gray-900">Duration (hours)</label>
+                <input type="number" id="duration" value={duration} onChange={e => setDuration(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="1" required />
             </div>
             <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Add Service</button>
         </form>

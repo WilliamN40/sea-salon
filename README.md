@@ -15,7 +15,7 @@ Welcome to the Sea Salon Project! This project is built with Next.js, Prisma, an
 - [Contributing](#contributing)
 - [License](#license)
 
-## Getting Started
+### Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 

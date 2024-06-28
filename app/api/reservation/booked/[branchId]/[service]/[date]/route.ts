@@ -1,9 +1,10 @@
 import prisma from "@/utils/prisma"
 
-export async function GET(request: Request, { params }: { params: { date: string } }) {
-    console.log(params)
+export async function GET(request: Request, { params }: { params: { branchId: string, service: string, date: string } }) {
     const reservations = await prisma.reservations.findMany({
         where: {
+            branchId: parseInt(params.branchId),
+            service: params.service,
             date: params.date
         }
     })

@@ -15,14 +15,16 @@ datasource db {
 }
 
 model Reservations {
-  id      Int    @id @default(autoincrement())
-  user    Users  @relation(fields: [userId], references: [id])
-  userId  String
-  name    String
-  phone   String
-  service String
-  date    String
-  time    String
+  id       Int      @id @default(autoincrement())
+  user     Users    @relation(fields: [userId], references: [id])
+  userId   String
+  branch   Branches @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  branchId Int
+  name     String
+  phone    String
+  service  String
+  date     String
+  time     String
 }
 
 model Reviews {
@@ -43,7 +45,19 @@ model Users {
 }
 
 model Services {
-  id          Int @id @default(autoincrement())
-  name        String
-  duration    Int
+  id       Int      @id @default(autoincrement())
+  name     String
+  duration Int
+  branch   Branches @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  branchId Int
+}
+
+model Branches {
+  id           Int            @id @default(autoincrement())
+  name         String
+  location     String
+  openingtime  String
+  closingtime  String
+  Services     Services[]
+  Reservations Reservations[]
 }

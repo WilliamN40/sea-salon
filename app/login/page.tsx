@@ -13,7 +13,7 @@ export default async function Login() {
             <h1 className="text-5xl font-bold">Login to your Account</h1>
             <LoginForm />
             <div className="flex gap-2 my-2">
-                <p>Don't have an account?</p>
+                <p>Don&apos;t have an account?</p>
                 <Link className="underline" href="/register">Register</Link>
             </div>
         </div>

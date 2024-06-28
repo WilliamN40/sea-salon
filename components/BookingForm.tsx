@@ -9,6 +9,7 @@ export default function BookingForm() {
 
     const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
+    const [branchId, setBranchId] = useState(0)
     const [service, setService] = useState('')
     const [date, setDate] = useState('')
     const [time, setTime] = useState('')
@@ -22,6 +23,7 @@ export default function BookingForm() {
                 body: JSON.stringify({
                     name,
                     phone,
+                    branchId,
                     service,
                     date,
                     time
@@ -42,6 +44,7 @@ export default function BookingForm() {
     const [booked, setBooked]: any = useState([])
 
     const [listServices, setListServices]:any = useState([])
+    const [listBranches, setListBranches]:any = useState([])
 
     useEffect(() => {
         const fetchListServices = async () => {
@@ -57,9 +60,22 @@ export default function BookingForm() {
     }, [])
 
     useEffect(() => {
-        const checkBooked = async (date: any) => {
+        const fetchListBranches = async () => {
             try {
-                const response = await fetch(`/api/reservation/booked/${date}`)
+                const response = await fetch('/api/branches')
+                const data = await response.json()
+                setListBranches(data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchListBranches()
+    }, [])
+
+    useEffect(() => {
+        const checkBooked = async (branchId: number, service: string, date: string) => {
+            try {
+                const response = await fetch(`/api/reservation/booked/${branchId}/${service}/${date}`)
                 const data = await response.json()
                 setBooked(data)
             } catch (error) {
@@ -67,10 +83,11 @@ export default function BookingForm() {
             }
         }
 
-        if (date) {
-            checkBooked(date)
+        if (branchId && service && date) {
+            checkBooked(branchId, service, date)
         }
-    }, [date])
+    }, [branchId, service, date])
+
 
     return (
         <form onSubmit={handleSubmit} className="w-1/3 mt-10">
@@ -82,18 +99,36 @@ export default function BookingForm() {
                 <label className="block mb-2 text-sm font-medium text-gray-900">Active Phone Number</label>
                 <input type="tel" id="phone" value={phone} onChange={e => setPhone(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="081211212212" required />
             </div>
+
             <div className="mb-5">
-                <label className="block mb-2 text-sm font-medium text-gray-900">Type of Service</label>
-                { listServices.map((serviceval: any) => (
-                    <div key={serviceval.id} className="radio flex items-center">
-                        <input type="radio" value={serviceval.name} checked={service === serviceval.name} onChange={e => setService(e.target.value)} />
+                <label className="block mb-2 text-sm font-medium text-gray-900">Branch</label>
+                { listBranches.map((branchval: any) => (
+                    <div key={branchval.id} className="radio flex items-center">
+                        <input type="radio" value={branchval.id} checked={branchId === branchval.id} onChange={e => setBranchId(parseInt(e.target.value))} />
                         <label className="ms-2">
-                            {serviceval.name}
+                            {branchval.name}
                         </label>
                     </div>
-                ))}
-                
+                ))}    
             </div>
+
+
+            { branchId !== 0 && (            
+                <div className="mb-5">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">Type of Service</label>
+                    { listServices.map((serviceval: any) => (
+                        <div key={serviceval.id} className="radio flex items-center">
+                            <input type="radio" value={serviceval.name} checked={service === serviceval.name} onChange={e => setService(e.target.value)} />
+                            <label className="ms-2">
+                                {serviceval.name}
+                            </label>
+                        </div>
+                    ))}    
+                </div>
+            )
+            }
+                
+
             <div className="mb-5">
                 <label className="block mb-2 text-sm font-medium text-gray-900">Date and Time</label>
                 <div className="">

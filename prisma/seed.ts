@@ -12,26 +12,39 @@ async function seed() {
         phone: "08123456789",
         password: hashedPassword,
         role: "Admin",
-      },
-    })
+    },
+})
 
+    //Populate Branches
+    await prisma.branches.create({
+        data: {
+            name: "Main Branch",
+            location: "Jawa Timur",
+            openingtime: "09:00",
+            closingtime: "21:00",
+        }
+    })
     // Populate Services
     await prisma.services.createMany({
         data: [
             {
                 name: "Haircuts and Styling",
-                duration: 60
+                duration: 1,
+                branchId: 1
             },
             {
                 name: "Manicure and Pedicure",
-                duration: 60,
+                duration: 1,
+                branchId: 1
             },
             {
                 name: "Facial Treatments",
-                duration: 60,
+                duration: 1,
+                branchId: 1
             }
     ]
     }) 
+
 }   
 
 seed()

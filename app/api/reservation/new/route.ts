@@ -4,16 +4,15 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export const POST = async (req: NextRequest) => {
-    const { name, phone, service, date, time } = await req.json();
+    const { name, phone, branchId, service, date, time } = await req.json();
     const userId = (await getServerSession(authOptions))?.user.id
-    console.log(await getServerSession(authOptions))
     try {
-        console.log({ name, phone, service, date, time, userId })
         const reservation = await prisma.reservations.create({
             data: {
                 userId: userId,
                 name: name,
                 phone: phone,
+                branchId: branchId,
                 service: service,
                 date: date,
                 time: time
