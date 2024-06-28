@@ -46,19 +46,7 @@ export default function BookingForm() {
     const [listServices, setListServices]:any = useState([])
     const [listBranches, setListBranches]:any = useState([])
 
-    useEffect(() => {
-        const fetchListServices = async () => {
-            try {
-                const response = await fetch('/api/services')
-                const data = await response.json()
-                setListServices(data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        fetchListServices()
-    }, [])
-
+    
     useEffect(() => {
         const fetchListBranches = async () => {
             try {
@@ -71,7 +59,20 @@ export default function BookingForm() {
         }
         fetchListBranches()
     }, [])
-
+    
+    useEffect(() => {
+        const fetchListServices = async () => {
+            try {
+                const response = await fetch(`/api/branches/${branchId}/services`)
+                const data = await response.json()
+                setListServices(data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchListServices()
+    }, [branchId])
+    
     useEffect(() => {
         const checkBooked = async (branchId: number, service: string, date: string) => {
             try {

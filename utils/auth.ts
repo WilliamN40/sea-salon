@@ -1,6 +1,7 @@
 import { AuthOptions } from "next-auth"
 import prisma from "./prisma"
 import { compare } from "bcrypt"
+import CredentialsProvider from "next-auth/providers/credentials"
 
 export const authOptions: AuthOptions = {
     session: {
@@ -58,6 +59,3 @@ export const authOptions: AuthOptions = {
     }
 }
 
-function CredentialsProvider(arg0: { name: string; credentials: { userId: {}; password: {} }; authorize(credentials: any): Promise<any> }): import("next-auth/providers/index").Provider {
-    throw new Error("Function not implemented.")
-}

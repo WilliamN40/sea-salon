@@ -1,5 +1,4 @@
 "use client"
-import { getServerSession } from "next-auth/next"
 import { useEffect, useState } from "react";
 
 export default  function PastReservations({ session }: any) {

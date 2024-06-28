@@ -2,10 +2,11 @@ import prisma from "@/utils/prisma";
 import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
-    const { name, duration } = await req.json();
+    const { branchId, name, duration } = await req.json();
     try {
         const service = await prisma.services.create({
             data: {
+                branchId: branchId,
                 name: name,
                 duration: duration,
             },

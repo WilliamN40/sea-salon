@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 
-function AddService({ listServices, setListServices}: any) {
+function AddService({ selectedBranchId, listServices, setListServices}: any) {
 
     const [serviceName, setServiceName] = useState('')
     const [duration, setDuration] = useState('')
@@ -13,6 +13,7 @@ function AddService({ listServices, setListServices}: any) {
             const response = await fetch('/api/services/new', {
                 method: 'POST',
                 body: JSON.stringify({
+                    branchId: selectedBranchId,
                     name: serviceName,
                     duration: parseInt(duration)
                 })
@@ -45,21 +46,36 @@ function AddService({ listServices, setListServices}: any) {
 }
 
 export default function AdminDashboard() {
-
+    
+    const [selectedBranchId, setSelectedBranchId] = useState(0);
     const [listServices, setListServices] = useState([]);
+    const [listBranches, setListBranches] = useState([]);
 
+    useEffect(() => {
+        const fetchListBranches = async () => {
+            try {
+                const response = await fetch('/api/branches')
+                const data = await response.json()
+                setListBranches(data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchListBranches()
+    }, [])
+    
     useEffect(() => {
         const fetchListServices = async () => {
             try {
-                const response = await fetch('/api/services');
-                const data = await response.json();
-                setListServices(data);
+                const response = await fetch(`/api/branches/${selectedBranchId}/services`)
+                const data = await response.json()
+                setListServices(data)
             } catch (error) {
-                console.log(error);
+                console.log(error)
             }
         }
-        fetchListServices();
-    }, [])
+        fetchListServices()
+    }, [selectedBranchId])
 
     const handleDelete = async (service: any) => {
 
@@ -77,23 +93,38 @@ export default function AdminDashboard() {
         }
     }
 
+
     return (
-        <div className="p-10 flex justify-around w-full">
-            <div>
-                <h2 className="text-3xl text-center">Services available</h2>
-                <ul className="list-disc">
-                    {listServices.map((service: any) => (
-                        <div key={service.id} className="flex justify-between gap-10 border border-gray-300 my-3 bg-white shadow overflow-hidden sm:rounded-lg p-3 text-xl">
-                            {service.name}
-                            <button onClick={() => handleDelete(service)} className="text-red-500">Delete</button>
-                        </div>
+        <div className="flex flex-col w-1/2 items-center p-5">
+            <div className="w-1/2">
+                <label className="block mb-2 text-lg font-medium text-gray-900 text-center">Branch</label>
+                <select value={selectedBranchId} onChange={e => setSelectedBranchId(parseInt(e.target.value))} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    <option disabled={true} key={0} value={0}>Pick a branch</option>
+                    {listBranches.map((branch: any) => (
+                        <option key={branch.id} value={branch.id}>{branch.name}</option>
                     ))}
-                </ul>
+                </select>
             </div>
-            <div className="w-1/3">
-                <h2 className="text-3xl text-center">Add new service</h2>
-                <AddService listServices={listServices} setListServices={setListServices}/>
-            </div>
+
+            { selectedBranchId !== 0  && (
+                <div className="p-10 flex justify-around w-full">
+                    <div>
+                        <h2 className="text-3xl text-center">Services available</h2>
+                        <ul className="list-disc">
+                            {listServices.map((service: any) => (
+                                <div key={service.id} className="flex justify-between gap-10 border border-gray-300 my-3 bg-white shadow overflow-hidden sm:rounded-lg p-3 text-xl">
+                                    {service.name}
+                                    <button onClick={() => handleDelete(service)} className="text-red-500">Delete</button>
+                                </div>
+                            ))}
+                        </ul>
+                    </div>
+                    <div className="w-1/3">
+                        <h2 className="text-3xl text-center">Add new service</h2>
+                        <AddService selectedBranchId={selectedBranchId} listServices={listServices} setListServices={setListServices}/>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
