@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image"
 import { getServerSession } from "next-auth";
 import SignOut from "./SignOut";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/auth";
 
 const Nav = async () => {
 
