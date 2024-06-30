@@ -1,6 +1,7 @@
 import prisma from "@/utils/prisma";
+import { NextRequest } from "next/server";
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
     const services = await prisma.services.findMany({
         where: {
             branchId: parseInt(params.id)

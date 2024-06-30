@@ -10,7 +10,7 @@ export default function BookingForm() {
     const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [branchId, setBranchId] = useState(0)
-    const [service, setService] = useState('')
+    const [serviceId, setServiceId] = useState(0)
     const [date, setDate] = useState('')
     const [time, setTime] = useState('')
 
@@ -24,7 +24,7 @@ export default function BookingForm() {
                     name,
                     phone,
                     branchId,
-                    service,
+                    serviceId,
                     date,
                     time
                 })
@@ -45,7 +45,8 @@ export default function BookingForm() {
 
     const [listServices, setListServices]:any = useState([])
     const [listBranches, setListBranches]:any = useState([])
-
+    
+    const [timeList, setTimeList]:any = useState([])
     
     useEffect(() => {
         const fetchListBranches = async () => {
@@ -70,13 +71,15 @@ export default function BookingForm() {
                 console.log(error)
             }
         }
-        fetchListServices()
+        if (branchId) {
+            fetchListServices()
+        }
     }, [branchId])
     
     useEffect(() => {
-        const checkBooked = async (branchId: number, service: string, date: string) => {
+        const checkBooked = async (serviceId: number, date: string) => {
             try {
-                const response = await fetch(`/api/reservation/booked/${branchId}/${service}/${date}`)
+                const response = await fetch(`/api/reservation/booked/${serviceId}/${date}`)
                 const data = await response.json()
                 setBooked(data)
             } catch (error) {
@@ -84,10 +87,27 @@ export default function BookingForm() {
             }
         }
 
-        if (branchId && service && date) {
-            checkBooked(branchId, service, date)
+        if (branchId && serviceId && date) {
+            checkBooked(serviceId, date)
         }
-    }, [branchId, service, date])
+
+    }, [serviceId, date])
+
+    useEffect(() => {
+        const fetchTimeList = async () => {
+            try {
+                const response = await fetch(`/api/services/${serviceId}/time`)
+                const data = await response.json()
+                setTimeList(data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        if (serviceId) {
+            fetchTimeList()
+        }
+    }, [serviceId])
+
 
 
     return (
@@ -102,15 +122,26 @@ export default function BookingForm() {
             </div>
 
             <div className="mb-5">
-                <label className="block mb-2 text-sm font-medium text-gray-900">Branch</label>
-                { listBranches.map((branchval: any) => (
-                    <div key={branchval.id} className="radio flex items-center">
-                        <input type="radio" value={branchval.id} checked={branchId === branchval.id} onChange={e => setBranchId(parseInt(e.target.value))} />
-                        <label className="ms-2">
-                            {branchval.name}
-                        </label>
+                <div className="grid grid-cols-2">
+                    <div>
+                        <label className="block mb-2 text-sm font-medium text-gray-900">Branch</label>
+                        { listBranches.map((branchval: any) => (
+                            <div key={branchval.id} className="radio flex items-center">
+                                <input type="radio" value={branchval.id} checked={branchId === branchval.id} onChange={e => setBranchId(parseInt(e.target.value))} />
+                                <label className="ms-2">
+                                    {branchval.name}
+                                </label>
+                            </div>
+                        ))}    
                     </div>
-                ))}    
+                    { branchId !== 0 && (
+                    <div className="border border-gray-300 p-3 rounded-lg">
+                        <h1 className="text-xl font-weight-extrabold">{listBranches.find((branchval: any) => branchval.id === branchId)?.name}</h1>
+                        <p>Opening Time: {listBranches.find((branchval: any) => branchval.id === branchId)?.openingtime}</p>
+                        <p>Closing Time: {listBranches.find((branchval: any) => branchval.id === branchId)?.closingtime}</p>
+                    </div>
+                    )}
+                </div>
             </div>
 
 
@@ -119,7 +150,7 @@ export default function BookingForm() {
                     <label className="block mb-2 text-sm font-medium text-gray-900">Type of Service</label>
                     { listServices.map((serviceval: any) => (
                         <div key={serviceval.id} className="radio flex items-center">
-                            <input type="radio" value={serviceval.name} checked={service === serviceval.name} onChange={e => setService(e.target.value)} />
+                            <input type="radio" value={serviceval.id} checked={serviceId === serviceval.id} onChange={e => setServiceId(parseInt(e.target.value))} />
                             <label className="ms-2">
                                 {serviceval.name}
                             </label>
@@ -137,7 +168,7 @@ export default function BookingForm() {
                     {
                         date && 
                         <ul id="timetable" className="grid w-full grid-cols-2 gap-2 mt-5">
-                            {["09:00 AM", "10:00 AM", "11:00 AM", "12:00 AM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM", "06:00 PM", "07:00 PM", "08:00 PM"].map((timeval) => {
+                            {timeList.map((timeval: any) => {
                                 return (
                                     <li key={timeval}>
                                         <input type="radio" disabled={booked.includes(timeval)} checked={time === timeval} onChange={e => setTime(e.target.value)} id={timeval} value={timeval} className="hidden peer" name="timetable" />

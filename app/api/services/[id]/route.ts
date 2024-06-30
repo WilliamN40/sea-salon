@@ -1,6 +1,7 @@
 import prisma from "@/utils/prisma"
+import { NextRequest } from "next/server"
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
     try {
         const service = await prisma.services.delete({
             where: {
