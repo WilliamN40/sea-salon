@@ -8,6 +8,10 @@ export const metadata: Metadata = {
   description: "Beauty and Elegance Redefined.",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 0.1,
+}
 export default function RootLayout({
   children,
 }: Readonly<{
