@@ -4,11 +4,12 @@ import prisma from "@/utils/prisma"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
-export default function BookingForm() {
+export default function BookingForm({ user }: any) {
     const router = useRouter()
 
     const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
+    const [useAccountInfo, setUseAccountInfo] = useState(false)
     const [branchId, setBranchId] = useState(0)
     const [serviceId, setServiceId] = useState(0)
     const [date, setDate] = useState('')
@@ -47,8 +48,22 @@ export default function BookingForm() {
     const [listBranches, setListBranches]:any = useState([])
     
     const [timeList, setTimeList]:any = useState([])
+
+    const [userName, setUserName] = useState('')
+    const [userPhone, setUserPhone] = useState('')
     
     useEffect(() => {
+        const fetchUserNameandPhone = async () => {
+            try {
+                const response = await fetch(`/api/users/${user.id}`)
+                const data = await response.json()
+                setUserName(data.name)
+                setUserPhone(data.phone)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
         const fetchListBranches = async () => {
             try {
                 const response = await fetch('/api/branches')
@@ -58,6 +73,8 @@ export default function BookingForm() {
                 console.log(error)
             }
         }
+
+        fetchUserNameandPhone()
         fetchListBranches()
     }, [])
     
@@ -109,17 +126,34 @@ export default function BookingForm() {
         }
     }, [serviceId])
 
-
+    const handleUseAccountInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUseAccountInfo(e.target.checked)
+        if (e.target.checked) {
+            setName(userName)
+            setPhone(userPhone)
+        } else
+        {
+            setName('')
+            setPhone('')
+        }
+    }
 
     return (
         <form onSubmit={handleSubmit} className="w-1/3 mt-10">
+
+
+
+            <div className="mb-3 flex gap-2 items-center">
+                <input type="checkbox" checked={useAccountInfo} onChange={handleUseAccountInfo} id="useAccount" className="w-4 h-4" />
+                <label className="block text-sm font-medium text-gray-900">Use account information</label>
+            </div>
             <div className="mb-5">
                 <label className="block mb-2 text-sm font-medium text-gray-900">Name</label>
-                <input type="text" id="name" value={name} onChange={e => setName(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Johnny Orangeseed" required />
+                <input type="text" id="name" disabled={useAccountInfo} value={name} onChange={e => setName(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:bg-gray-300" placeholder="Johnny Orangeseed" required />
             </div>
             <div className="mb-5">
                 <label className="block mb-2 text-sm font-medium text-gray-900">Active Phone Number</label>
-                <input type="tel" id="phone" value={phone} onChange={e => setPhone(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="081211212212" required />
+                <input type="tel" id="phone" disabled={useAccountInfo} value={phone} onChange={e => setPhone(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:bg-gray-300" placeholder="081211212212" required />
             </div>
 
             <div className="mb-5">
