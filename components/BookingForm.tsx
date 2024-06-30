@@ -95,6 +95,7 @@ export default function BookingForm() {
 
     useEffect(() => {
         const fetchTimeList = async () => {
+            setTimeList([])
             try {
                 const response = await fetch(`/api/services/${serviceId}/time`)
                 const data = await response.json()
