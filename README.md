@@ -10,7 +10,6 @@ Welcome to the Sea Salon Project! This project is built with Next.js, Prisma, an
 - [Running the Project](#running-the-project)
 - [Environment Variables](#environment-variables)
 - [Database](#database)
-- [File Structure](#file-structure)
 - [Technologies Used](#technologies-used)
 - [Contributing](#contributing)
 - [License](#license)
@@ -104,41 +103,14 @@ To create a new migration, run:
 npx prisma migrate dev --name migration-name
 ```
 
-### File Structure
-```
-.
-├── prisma
-│   ├── migrations
-│   └── schema.prisma
-├── public
-├── src
-│   ├── pages
-│   ├── components
-│   ├── styles
-│   └── lib
-├── .env
-├── .gitignore
-├── package.json
-├── README.md
-└── tsconfig.json
-```
-- prisma/: Contains the Prisma schema and migrations.
-- public/: Static assets.
-- src/: Source code.
-    - pages/: Next.js pages.
-    - components/: React components.
-    - styles/: CSS styles.
-    - lib/: Utility functions and libraries.
-- .env: Environment variables.
-- .gitignore: Git ignore file.
-- package.json: Project dependencies and scripts.
-- tsconfig.json: TypeScript configuration.
+
 ### Technologies Used
 - [Next.js](https://nextjs.org/)
 - [Prisma](https://www.prisma.io/)
 - [PostgreSQL](https://www.prisma.io/)
 - [React](https://reactjs.org/)
 - [NextAuth.js](https://next-auth.js.org/)
+
 ### Contributing
 Contributions are welcome! Please open an issue or submit a pull request.
 
