@@ -24,6 +24,9 @@ const RatingSystem = ({ listReviews, setListReviews }: any) => {
 
             if (response.ok) {
                 alert('Review submitted successfully')
+                setName('')
+                setRating(0)
+                setComment('')
                 setListReviews([...listReviews, {
                     name,
                     rating,
