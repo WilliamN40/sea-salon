@@ -4,23 +4,23 @@ Welcome to the Sea Salon Project! This project is built with Next.js, Prisma, an
 
 ## Table of Contents
 
-- [Getting Started](#getting-started)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Running the Project](#running-the-project)
-- [Environment Variables](#environment-variables)
 - [Database](#database)
 - [Technologies Used](#technologies-used)
-- [Contributing](#contributing)
-- [License](#license)
 
-### Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+### Features
+- Time slot reservation system
+- Customer Review System
+- Authentication System
+    - Admin Dashboard
+        - Access via login ```thomas.n@ntu.edu.sg``` and password ```Admin123```
+        - Add services, add new branch
 
 ### Prerequisites
 
-- Node.js (version 14 or higher)
+- Node.js
 - npm or yarn
 - PostgreSQL
 
@@ -78,20 +78,8 @@ yarn dev
 ```
 The project should now be running at http://localhost:3000.
 
-### Environment Variables
-- POSTGRES_URL: The connection string for your PostgreSQL database.
-- POSTGRES_PRISMA_URL: The Prisma connection string for your PostgreSQL database.
-- POSTGRES_URL_NO_SSL: The connection string for your PostgreSQL database without SSL.
-- POSTGRES_URL_NON_POOLING: The non-pooling connection string for your PostgreSQL database.
-- POSTGRES_USER: The PostgreSQL user (default: "default").
-- POSTGRES_HOST: The PostgreSQL host.
-- POSTGRES_PASSWORD: The PostgreSQL password.
-- POSTGRES_DATABASE: The PostgreSQL database (default: "verceldb").
-- NEXTAUTH_URL: The URL of your NextAuth instance.
-- NEXTAUTH_SECRET: The secret for NextAuth.
-
 ### Database
-This project uses Prisma as the ORM and PostgreSQL as the database. Prisma makes it easy to interact with your database and provides type safety.
+This project uses Prisma as the ORM and PostgreSQL as the database.
 
 #### Prisma Schema
 The Prisma schema is defined in prisma/schema.prisma. You can update the schema and run migrations as needed.
@@ -103,16 +91,9 @@ To create a new migration, run:
 npx prisma migrate dev --name migration-name
 ```
 
-
 ### Technologies Used
 - [Next.js](https://nextjs.org/)
 - [Prisma](https://www.prisma.io/)
 - [PostgreSQL](https://www.prisma.io/)
 - [React](https://reactjs.org/)
 - [NextAuth.js](https://next-auth.js.org/)
-
-### Contributing
-Contributions are welcome! Please open an issue or submit a pull request.
-
-### License
-This project is licensed under the MIT License - see the LICENSE file for details.
