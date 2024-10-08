@@ -15,7 +15,7 @@ Welcome to the Sea Salon Project! This project is built with Next.js, Prisma, an
 - Customer Review System
 - Authentication System
     - Admin Dashboard
-        - Access via login ```thomas.n@ntu.edu.sg``` and password ```Admin123```
+        - Access via login ```thomas_n``` and password ```Admin123```
         - Add services, add new branch
 
 ### Prerequisites
